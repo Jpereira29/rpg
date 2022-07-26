@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react'
+import * as C from './App.styles'
+import { Character } from './components/Character'
+import { useCharacter } from './hooks/useCharacter'
+export default function App() {
 
-function App() {
+  const char = useCharacter('Player 1')
+  const char2 = useCharacter('Player 2')
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    switch (e.code) {
+      case 'KeyA':
+      case 'ArrowLeft':
+        char.movLeft()
+        break
+      case 'KeyW':
+      case 'ArrowUp':
+        char.moveUp()
+        break
+      case 'KeyD':
+      case 'ArrowRight':
+        char.moveRight()
+        break
+      case 'KeyS':
+      case 'ArrowDown':
+        char.moveDown()
+        break
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <C.Container>
+      <C.Map>
+        <Character x={char.x} y={char.y} position={char.position} name={char.name} />
+        <Character x={char2.x} y={char2.y} position={char2.position} name={char2.name} />
+      </C.Map>
+    </C.Container>
+  )
 }
-
-export default App;
